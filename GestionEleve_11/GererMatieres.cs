@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿using GestionEleve_11.Data;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,31 +11,20 @@ namespace GestionEleve_11
 {
     class GererMatieres
     {
-
-        public static MySqlDataAdapter RechercheMs(Etudiant Etu)
+        linqtpEntities myEntity { get; set; }
+        public GererMatieres()
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-                
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "select * from matieres where niveau like '%" + Etu.Niveau + "%'" +
-                    " and code_Fil like '%" + Etu.Code_Fil + "%' ; ";
+            myEntity = new linqtpEntities();
 
-                cmd.Connection = cnx;
-                Console.WriteLine(cnx.State);
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                MySqlDataAdapter dtadapter = new MySqlDataAdapter(cmd.CommandText, cnx);
+        }
+        public  List<matieres> RechercheMs(eleves Etu)
+        {
+            var query = from e in myEntity.matieres
+                        where  e.code_Fil== Etu.code_Fil && e.niveau== Etu.niveau
+                        select e;
 
-                return dtadapter;
-            }
+            return query.ToList<matieres>();
+          
         }
     }
 }

@@ -3,137 +3,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using GestionEleve_11.Data;
 using MySql.Data.MySqlClient;
 
 namespace GestionEleve_11
 {
     class GererNotes
     {
-        GererNotes()
+        linqtpEntities myEntity { get; set; }
+        public GererNotes()
         {
+            myEntity = new linqtpEntities();
+        }
+        public  void AjouterNote(notes N)
+        {
+            myEntity.notes.Add(N);
+            myEntity.SaveChanges();
 
         }
-        public static void AjouterNote(Note N)
+        public  void SupprimerNote(notes N)
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "insert into notes values('" + N.CodeEl + "','" + N.CodeMat + "','" +
-                    "+"+N.NoteE+"');";
-
-                cmd.Connection = cnx;
-                Console.WriteLine(cnx.State);
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-
-                cmd.ExecuteNonQuery();
-            }
+            var query = from n in myEntity.notes
+                        where n.codeElev == N.codeElev && n.codeMat==N.codeMat
+                        select n;
+           notes  notesup = query.FirstOrDefault<notes>();
+            myEntity.notes.Remove(notesup);
+            myEntity.SaveChanges();
 
         }
-        public static void SupprimerNote(Note N)
+        public List<notes> ListerNotes(string codeElev)
         {
+            var query = from n in myEntity.notes
+                        where n.codeElev.Contains(codeElev) 
+                        select n;
 
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-                // the reason why i added using () is bc my connection can be already in use exception happened
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "delete from notes where codeElev='" + N.CodeEl + "' and codeMat ='" +
-                    N.CodeMat +"';";
-
-                cmd.Connection = cnx;
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                cmd.ExecuteNonQuery();
-            }
-
+            return query.ToList<notes>();
 
         }
-        public static MySqlDataAdapter ListerNotes(string codeElev)
+        public  void UpdateN(notes N)
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                MySqlDataAdapter sqlDa = new MySqlDataAdapter("select * from notes where codeElev ='" +
-                   codeElev+ "' ;", cnx);
-                return sqlDa;
-            }
+            var noteToUpdate = from note in myEntity.notes
+                                where note.codeElev == N.codeElev && note.codeMat== N.codeMat
+                                select note;
 
+            noteToUpdate.FirstOrDefault().note = N.note;
+
+            myEntity.SaveChanges();
+          
         }
-        public static void UpdateN(Note N)
+        public  Boolean NoteExiste(notes N) 
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "update notes set note='" + N.NoteE + "' where codeElev='" + N.CodeEl + "'" +
-                    " AND codeMat='"+N.CodeMat+"';";
-
-                cmd.Connection = cnx;
-                Console.WriteLine(cnx.State);
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                cmd.ExecuteNonQuery();
-
-            }
-        }
-        public static Boolean NoteExiste(Note N) 
-        {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-                // the reason why i added using () is bc my connection can be already in use exception happened
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "select * from notes where codeElev='" + N.CodeEl + "' and codeMat ='" +
-                    N.CodeMat + "';";
-
-                cmd.Connection = cnx;
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-
-                MySqlDataReader rd = cmd.ExecuteReader();
-                if (rd.HasRows)
-                {
-                    return true;
-                }
-                return false;
-            }
+            return myEntity.notes.Any(a => a.codeElev ==N.codeElev && a.codeMat==N.codeMat);
             
         }
-        public static MySqlDataAdapter ListerUneNote(Note N)
+        public  List<notes> ListerUneNote(notes N)
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
-                // the state of my connection was closed sometimes so i added this line
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
-                MySqlDataAdapter sqlDa = new MySqlDataAdapter("select * from notes where codeElev ='" +
-                   N.CodeEl + "' and codeMat ='"+N.CodeMat+"' ;", cnx);
-                return sqlDa;
-            }
+            var query = from n in myEntity.notes
+                        where n.codeElev == N.codeElev && n.codeMat==N.codeMat
+                        select n;
+            
+            return query.ToList<notes>();
+           
 
         }
     }

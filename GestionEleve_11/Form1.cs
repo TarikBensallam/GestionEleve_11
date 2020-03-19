@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GestionEleve_11.Data;
 using MySql.Data.MySqlClient;
 namespace GestionEleve_11
 {
     public partial class Form1 : Form
     {
+        GererEtudiant _Getudiant;
         public Form1()
         {
             InitializeComponent();
+            _Getudiant = new GererEtudiant();
             InitialiserGrid();
         }
 
@@ -22,8 +25,8 @@ namespace GestionEleve_11
         {
        
             string nom, prenom, code, niveau,fili;
-            //hellogithub
-            Etudiant E = new Etudiant();
+           
+            eleves E = new eleves();
             code = textBox1.Text;
             nom = textBox2.Text;
             prenom = textBox3.Text;
@@ -53,18 +56,18 @@ namespace GestionEleve_11
             }
 
             // i still need to check if the primary key exist 
-            if (GererEtudiant.EtudiantExiste(code))
+            if (_Getudiant.EtudiantExiste(code))
             {
                 MessageBox.Show("Ce code etudiant existe déjà , impossible d'ajouter");
                 return;
             }
-            E.Code = code;
-            E.Niveau = niveau;
-            E.Nom = nom;
-            E.Prenom = prenom;
-            E.Code_Fil = fili;
+            E.codeElev = code;
+            E.niveau = niveau;
+            E.nom = nom;
+            E.prenom = prenom;
+            E.code_Fil = fili;
 
-            GererEtudiant.AjouterEtudiant(E);
+           _Getudiant.AjouterEtudiant(E);
             MessageBox.Show("Etudiant Insérer");
             SupprimerTtChamps();
             InitialiserGrid();
@@ -90,7 +93,7 @@ namespace GestionEleve_11
                 MessageBox.Show("Entrez le code étudiant pour supprimer un étudiant !");
                 return;
             }
-            if (!GererEtudiant.EtudiantExiste(code))
+            if (!_Getudiant.EtudiantExiste(code))
             {
                 MessageBox.Show("cet étudiant n'existe pas !! ");
                 return;
@@ -101,7 +104,7 @@ namespace GestionEleve_11
             {
                 return;
             }
-            GererEtudiant.SupprimerEtudiant(code);
+            _Getudiant.SupprimerEtudiant(code);
             MessageBox.Show("Étudiant Supprimé ! ");
             InitialiserGrid();
         }
@@ -109,7 +112,7 @@ namespace GestionEleve_11
 
         private void button5_Click(object sender, EventArgs e) // Rechercher
         {
-            MySqlDataAdapter sqlDa=null;
+            
             string code="";
             string nom = "";
             string prenom = "";
@@ -143,23 +146,27 @@ namespace GestionEleve_11
             }
         
             
-            Etudiant E = new Etudiant(code,nom,prenom,niveau,fili);
-            sqlDa = GererEtudiant.RechercheE(E);
+            eleves E = new eleves();
+            E.codeElev = code;
+            E.nom = nom;
+            E.prenom = prenom;
+            E.code_Fil = fili;
+            E.niveau = niveau;
+            List<eleves> listE = _Getudiant.RechercheE(E);
             
-            DataTable tbl = new DataTable();
-            sqlDa.Fill(tbl);
-
-            dataGridView1.DataSource = tbl;
+           
+            dataGridView1.DataSource = listE;
 
         }
         private void InitialiserGrid() // intitialisation de la liste afficher
         {
+            _Getudiant = new GererEtudiant(); 
+            // j'ai ajouter cette ligne car quand je faisais la modification même quand j'intialisais , la modification
+            //n'apparait pas dans grid 
 
-            MySqlDataAdapter sqlDa = GererEtudiant.ListerTtEtudiant();
-            DataTable tbl = new DataTable();
-            sqlDa.Fill(tbl);
+            List<eleves> listE = _Getudiant.ListerTtEtudiant();
 
-            dataGridView1.DataSource = tbl;
+            dataGridView1.DataSource = listE;
         }
 
         private void button3_Click(object sender, EventArgs e) // Modifier
@@ -171,8 +178,8 @@ namespace GestionEleve_11
                 MessageBox.Show("Sélectionnez un étudiant pour le modifier");
                 return;
             }
-            Etudiant et = GererEtudiant.RechercheE(code);
-            ComboBoxModif frm = new ComboBoxModif(et);
+            eleves eleve = _Getudiant.RechercherUnEtudiant(code);
+            ComboBoxModif frm = new ComboBoxModif(eleve);
             frm.Show();  
 
         }
@@ -189,11 +196,9 @@ namespace GestionEleve_11
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string fili = comboBox1.Text;
-            MySqlDataAdapter sqlDa = GererEtudiant.RechercheParFilière(fili);
-            DataTable tbl = new DataTable();
-            sqlDa.Fill(tbl);
-
-            dataGridView1.DataSource = tbl;
+            List<eleves> l = _Getudiant.RechercheParFilière(fili);
+           
+            dataGridView1.DataSource = l;
         }
 
         private void button6_Click(object sender, EventArgs e) // gestion des notes
@@ -208,8 +213,8 @@ namespace GestionEleve_11
                 MessageBox.Show("Sélectionnez un étudiant pour le modifier");
                 return;
             }
-            Etudiant E = GererEtudiant.RechercheE(code);// we need etudiant with that code 
-            Form2 frm2 = new Form2(E);
+            eleves Eleve = _Getudiant.RechercherUnEtudiant(code);// we need etudiant with that code 
+            Form2 frm2 = new Form2(Eleve);
             frm2.Show();
         }
     }

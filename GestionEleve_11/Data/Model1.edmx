@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="linqtpModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="eleves">
+          <Key>
+            <PropertyRef Name="codeElev" />
+          </Key>
+          <Property Name="codeElev" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="prenom" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="niveau" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="code_Fil" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="filieres">
+          <Key>
+            <PropertyRef Name="codeF" />
+          </Key>
+          <Property Name="codeF" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="designation" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="matieres">
+          <Key>
+            <PropertyRef Name="codeMat" />
+          </Key>
+          <Property Name="codeMat" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="designation" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="niveau" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="semestre" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="code_Fil" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="moyennes">
+          <Key>
+            <PropertyRef Name="codeElev" />
+            <PropertyRef Name="codeF" />
+            <PropertyRef Name="niveau" />
+          </Key>
+          <Property Name="codeElev" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="codeF" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="niveau" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Moyenne_Ann" Type="double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="notes">
+          <Key>
+            <PropertyRef Name="codeElev" />
+            <PropertyRef Name="codeMat" />
+          </Key>
+          <Property Name="codeElev" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="codeMat" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="note" Type="double" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="linqtpModelStoreContainer">
+          <EntitySet Name="eleves" EntityType="Self.eleves" Schema="linqtp" store:Type="Tables" />
+          <EntitySet Name="filieres" EntityType="Self.filieres" Schema="linqtp" store:Type="Tables" />
+          <EntitySet Name="matieres" EntityType="Self.matieres" Schema="linqtp" store:Type="Tables" />
+          <EntitySet Name="moyennes" EntityType="Self.moyennes" Schema="linqtp" store:Type="Tables" />
+          <EntitySet Name="notes" EntityType="Self.notes" Schema="linqtp" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="linqtpModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="eleves">
+          <Key>
+            <PropertyRef Name="codeElev" />
+          </Key>
+          <Property Name="codeElev" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nom" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="prenom" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="niveau" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="code_Fil" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="filieres">
+          <Key>
+            <PropertyRef Name="codeF" />
+          </Key>
+          <Property Name="codeF" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="designation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="matieres">
+          <Key>
+            <PropertyRef Name="codeMat" />
+          </Key>
+          <Property Name="codeMat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="designation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="niveau" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="semestre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="code_Fil" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="moyennes">
+          <Key>
+            <PropertyRef Name="codeElev" />
+            <PropertyRef Name="codeF" />
+            <PropertyRef Name="niveau" />
+          </Key>
+          <Property Name="codeElev" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codeF" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="niveau" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Moyenne_Ann" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="notes">
+          <Key>
+            <PropertyRef Name="codeElev" />
+            <PropertyRef Name="codeMat" />
+          </Key>
+          <Property Name="codeElev" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codeMat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="note" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="linqtpEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="eleves" EntityType="Self.eleves" />
+          <EntitySet Name="filieres" EntityType="Self.filieres" />
+          <EntitySet Name="matieres" EntityType="Self.matieres" />
+          <EntitySet Name="moyennes" EntityType="Self.moyennes" />
+          <EntitySet Name="notes" EntityType="Self.notes" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="linqtpModelStoreContainer" CdmEntityContainer="linqtpEntities">
+          <EntitySetMapping Name="eleves">
+            <EntityTypeMapping TypeName="linqtpModel.eleves">
+              <MappingFragment StoreEntitySet="eleves">
+                <ScalarProperty Name="codeElev" ColumnName="codeElev" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="prenom" ColumnName="prenom" />
+                <ScalarProperty Name="niveau" ColumnName="niveau" />
+                <ScalarProperty Name="code_Fil" ColumnName="code_Fil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="filieres">
+            <EntityTypeMapping TypeName="linqtpModel.filieres">
+              <MappingFragment StoreEntitySet="filieres">
+                <ScalarProperty Name="codeF" ColumnName="codeF" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="matieres">
+            <EntityTypeMapping TypeName="linqtpModel.matieres">
+              <MappingFragment StoreEntitySet="matieres">
+                <ScalarProperty Name="codeMat" ColumnName="codeMat" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="niveau" ColumnName="niveau" />
+                <ScalarProperty Name="semestre" ColumnName="semestre" />
+                <ScalarProperty Name="code_Fil" ColumnName="code_Fil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="moyennes">
+            <EntityTypeMapping TypeName="linqtpModel.moyennes">
+              <MappingFragment StoreEntitySet="moyennes">
+                <ScalarProperty Name="codeElev" ColumnName="codeElev" />
+                <ScalarProperty Name="codeF" ColumnName="codeF" />
+                <ScalarProperty Name="niveau" ColumnName="niveau" />
+                <ScalarProperty Name="Moyenne_Ann" ColumnName="Moyenne_Ann" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notes">
+            <EntityTypeMapping TypeName="linqtpModel.notes">
+              <MappingFragment StoreEntitySet="notes">
+                <ScalarProperty Name="codeElev" ColumnName="codeElev" />
+                <ScalarProperty Name="codeMat" ColumnName="codeMat" />
+                <ScalarProperty Name="note" ColumnName="note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

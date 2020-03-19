@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestionEleve_11.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,14 +14,16 @@ namespace GestionEleve_11
     public partial class ComboBoxModif : Form
     {
         public string codeE;
-        public ComboBoxModif(Etudiant e)
+        GererEtudiant _Getudiant;
+        public ComboBoxModif(eleves e)
         {
             InitializeComponent();
-            this.codeE=label2.Text = e.Code;
-            textBox1.Text = e.Nom;
-            textBox2.Text = e.Prenom;
-            comboBox1.Text = e.Code_Fil;
-            textBox3.Text = e.Niveau;
+            _Getudiant = new GererEtudiant();
+            this.codeE=label2.Text = e.codeElev;
+            textBox1.Text = e.nom;
+            textBox2.Text = e.prenom;
+            comboBox1.Text = e.code_Fil;
+            textBox3.Text = e.niveau;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -49,13 +52,13 @@ namespace GestionEleve_11
             }
 
             // Now i need to update 
-            Etudiant et1 = new Etudiant();
-            et1.Code = this.codeE;
-            et1.Nom = textBox1.Text;
-            et1.Prenom = textBox2.Text;
-            et1.Code_Fil = comboBox1.Text;
-            et1.Niveau = textBox3.Text;
-            GererEtudiant.UpdateE(et1);
+            eleves et1 = new eleves();
+            et1.codeElev = this.codeE;
+            et1.nom = textBox1.Text;
+            et1.prenom = textBox2.Text;
+            et1.code_Fil = comboBox1.Text;
+            et1.niveau = textBox3.Text;
+            _Getudiant.UpdateE(et1);
             MessageBox.Show("Etudiant Modifié");
             this.Close();
             

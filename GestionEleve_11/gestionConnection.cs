@@ -14,7 +14,7 @@ namespace GestionEleve_11
         private gestionConnection()
         {
            
-            cnx = new MySqlConnection(@"server=localhost;database=biblio;userid=root;password=");
+            cnx = new MySqlConnection(@"server=localhost;database=linqtp;userid=root;password=");
             cnx.Open();
        
         }

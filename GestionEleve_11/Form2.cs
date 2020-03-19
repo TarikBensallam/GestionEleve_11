@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using GestionEleve_11.Data;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,32 +14,33 @@ namespace GestionEleve_11
 {
     public partial class Form2 : Form
     {
-        Etudiant E = new Etudiant();
-        public Form2(Etudiant E)
+        eleves E = new eleves();
+        GererMatieres _Gmatières;
+        GererNotes _Gnotes;
+        public Form2(eleves E)
         {
             InitializeComponent();
             this.E = E;
-            label4.Text = E.Code;
-            MySqlDataAdapter sqlDa = GererMatieres.RechercheMs(E);
-            DataTable Matières = new DataTable("Matières");
-
-            sqlDa.Fill(Matières);
-            foreach(DataRow dr in Matières.Rows)
+            _Gmatières = new GererMatieres();
+            _Gnotes = new GererNotes();
+            label4.Text = E.codeElev;
+            List<matieres> Listmat = _Gmatières.RechercheMs(E);
+            
+            foreach(matieres dr in Listmat)
             {
-                comboBox1.Items.Add(dr[0].ToString());
+                comboBox1.Items.Add(dr.codeMat);
             }
             InitialiserGrid();
         }
         private void InitialiserGrid() // intitialisation de la liste afficher
         {
+            _Gnotes = new GererNotes();
+            List<notes> listn = _Gnotes.ListerNotes(E.codeElev);
+      
 
-            MySqlDataAdapter sqlDa = GererNotes.ListerNotes(E.Code);
-            DataTable tbl = new DataTable();
-            sqlDa.Fill(tbl);
-
-            dataGridView1.DataSource = tbl;
+            dataGridView1.DataSource = listn;
         }
-        private void button5_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)  //rechercher
         {
             // Afficher dans Grid just la ligne de la matière séléctionnée 
             string matière = comboBox1.Text;
@@ -47,13 +49,15 @@ namespace GestionEleve_11
                 MessageBox.Show("Entrez une matière pour rechercher");
                 return;
             }
-            Note N = new Note(E.Code, matière,0);
+            notes N = new notes();
+            N.codeElev = E.codeElev;
+            N.codeMat = matière;
+            N.note = 0;
             
-            MySqlDataAdapter sqlDa = GererNotes.ListerUneNote(N);
-            DataTable tbl = new DataTable();
-            sqlDa.Fill(tbl);
+            List<notes> n = _Gnotes.ListerUneNote(N);
+           
 
-            dataGridView1.DataSource = tbl;
+            dataGridView1.DataSource = n;
         }
 
         private void button2_Click(object sender, EventArgs e) // Ajouter une note
@@ -77,15 +81,18 @@ namespace GestionEleve_11
                 MessageBox.Show("La note doit être entre 0 et 20");
                 return;
             }
-            Note N = new Note(E.Code, matière, Note);
+            notes N = new notes();
+            N.codeElev = E.codeElev;
+            N.codeMat = matière;
+            N.note = Note;
             // on doit premièrement voir si cette matière à déjà une note , dans ce cas on peut seulement la modifier, 
-            Boolean noteExistedeja = GererNotes.NoteExiste(N);
+            Boolean noteExistedeja = _Gnotes.NoteExiste(N);
             if (noteExistedeja)
             {
                 MessageBox.Show("la note de cette matière existe déjà , vous pouvez seulement la modifier!");
                 return;
             }
-            GererNotes.AjouterNote(N);
+            _Gnotes.AjouterNote(N);
             MessageBox.Show("Note ajoutée");
             InitialiserGrid();
 
@@ -113,8 +120,12 @@ namespace GestionEleve_11
                 return;
             }
 
-            Note N = new Note(codeE, codeM,0);
-            GererNotes.SupprimerNote(N);
+           
+            notes N = new notes();
+            N.codeElev = codeE;
+            N.codeMat = codeM;
+            N.note = 0;
+            _Gnotes.SupprimerNote(N);
             InitialiserGrid();
             MessageBox.Show("Note supprimée");
             
@@ -146,8 +157,12 @@ namespace GestionEleve_11
             {
                 return;
             }
-            Note Nv = new Note(codeE, codeM, Note);
-            GererNotes.UpdateN(Nv);
+            
+            notes N = new notes();
+            N.codeElev = codeE;
+            N.codeMat = codeM;
+            N.note = Note;
+            _Gnotes.UpdateN(N);
             InitialiserGrid();
             MessageBox.Show("Note modifié");
         }
