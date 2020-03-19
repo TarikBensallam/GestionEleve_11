@@ -104,9 +104,12 @@ namespace GestionEleve_11
             {
                 return;
             }
+            eleves ee = _Getudiant.RechercherUnEtudiant(code);
             _Getudiant.SupprimerEtudiant(code);
             MessageBox.Show("Étudiant Supprimé ! ");
             InitialiserGrid();
+            DeletingInXML dl = new DeletingInXML("D:\\ensat.xml");
+            dl.AjouterEleveSupprimerAuFichierXML(ee);
         }
        
 

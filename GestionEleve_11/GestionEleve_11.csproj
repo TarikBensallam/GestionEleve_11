@@ -135,7 +135,7 @@
     <Compile Include="Data\notes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Etudiant.cs" />
+    <Compile Include="DeletingInXML.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,8 +158,6 @@
     <Compile Include="GestionDesNotes.Designer.cs">
       <DependentUpon>GestionDesNotes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Matière.cs" />
-    <Compile Include="Note.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ComboBoxModif.resx">
