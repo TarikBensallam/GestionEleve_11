@@ -166,8 +166,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Data\" />
+    <ProjectReference Include="..\Dao\Dao.csproj">
+      <Project>{cbbe469a-137f-44dd-a69a-2bf6166866e5}</Project>
+      <Name>Dao</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

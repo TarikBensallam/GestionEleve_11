@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Dao.Data;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +10,29 @@ namespace GestionEleve_11
 {
     class GererEtudiant
     {
+        linqtpEntities myEntity { get; set; }
         GererEtudiant()
         {
-
+            myEntity = new linqtpEntities();
         }
-        public static void AjouterEtudiant(Etudiant e)
+        public  void AjouterEtudiant(eleves e)
         {
-            using (MySqlConnection cnx = gestionConnection.getConnection())
-            {
+            myEntity.eleves.Add(e);
+            //using (MySqlConnection cnx = gestionConnection.getConnection())
+            //{
                 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "insert into eleves values('" + e.Code + "','" + e.Nom + "','" + e.Prenom + "','" + e.Niveau + "','" + e.Code_Fil + "');";
+            //    MySqlCommand cmd = new MySqlCommand();
+            //    cmd.CommandText = "insert into eleves values('" + e.Code + "','" + e.Nom + "','" + e.Prenom + "','" + e.Niveau + "','" + e.Code_Fil + "');";
 
-                cmd.Connection = cnx;
-                Console.WriteLine(cnx.State);
-                if (cnx.State == System.Data.ConnectionState.Closed)
-                {
-                    cnx.Open();
-                }
+            //    cmd.Connection = cnx;
+            //    Console.WriteLine(cnx.State);
+            //    if (cnx.State == System.Data.ConnectionState.Closed)
+            //    {
+            //        cnx.Open();
+            //    }
                 
-                cmd.ExecuteNonQuery();
-            }
+            //    cmd.ExecuteNonQuery();
+            //}
                
         }
 
